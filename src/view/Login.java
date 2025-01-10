@@ -2,8 +2,6 @@ package view;
 
 import controller.AuthenticationController;
 import controller.PasswordToggleCommand;
-import model.classes.Customer;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
