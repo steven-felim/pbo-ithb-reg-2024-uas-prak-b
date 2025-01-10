@@ -3,7 +3,7 @@ package model.classes;
 import java.util.Date;
 
 public class Transaction {
-    private int id;
+    private int trans_id;
     private int customer_id;
     private String delivery_type;
     private int expected_weight;
@@ -13,8 +13,12 @@ public class Transaction {
     private String receipt_address;
     private String receipt_phone;
 
-    public Transaction(int id, int customer_id, String delivery_type, int expected_weight, int total_cost, Date createdAt, String receipt_name, String receipt_address, String receipt_phone) {
-        this.id = id;
+    public Transaction() {
+
+    }
+
+    public Transaction(int trans_id, int customer_id, String delivery_type, int expected_weight, int total_cost, Date createdAt, String receipt_name, String receipt_address, String receipt_phone) {
+        this.trans_id = trans_id;
         this.customer_id = customer_id;
         this.delivery_type = delivery_type;
         this.expected_weight = expected_weight;
@@ -25,12 +29,12 @@ public class Transaction {
         this.receipt_phone = receipt_phone;
     }
 
-    public int getId() {
-        return id;
+    public int getTrans_id() {
+        return trans_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTrans_id(int trans_id) {
+        this.trans_id = trans_id;
     }
 
     public int getCustomer_id() {

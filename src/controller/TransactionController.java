@@ -1,17 +1,11 @@
 package controller;
 
-import model.classes.DeliveryDetails;
-import model.classes.Transaction;
-import model.enums.Status;
-
 import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class TransactionController {
     public void addToTransaction(int customer_id, String delivery_type, int expected_weight, String receipt_name, String receipt_address, String receipt_phone) {
@@ -77,34 +71,6 @@ public class TransactionController {
         }
 
         return true;
-    }
-
-
-
-    public DeliveryDetails getDeliveryDetails(int searchID) {
-        DatabaseHandler.getInstance().connect();
-
-        DeliveryDetails dd = new DeliveryDetails();
-
-        try (
-                Statement stmt = DatabaseHandler.getInstance().con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM delivery_details WHERE trans_id = " + searchID + ";")) {
-
-            while (rs.next()) {
-                dd.setId(rs.getInt("id"));
-                dd.setTransaction_id(rs.getInt("trans_id"));
-                dd.setStatus(Status.valueOf(rs.getString("status")));
-                dd.setCurrent_position(rs.getString("current_position"));
-                dd.setDate(rs.getDate("date"));
-                dd.setUpdated_by(rs.getString("updated_by"));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DatabaseHandler.getInstance().disconnect();
-        }
-        return dd;
     }
 
     public String[] getCategory() {

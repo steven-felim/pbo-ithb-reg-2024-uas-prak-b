@@ -1,19 +1,23 @@
 package view;
 
 import controller.AuthenticationController;
-import controller.TransactionController;
-import model.classes.Transaction;
+import controller.AuthenticationHelper;
+import controller.DeliveryDetailController;
+import model.classes.DeliveryTransaction;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.List;
 
 public class ViewHistory extends JFrame {
-    private TransactionController tc;
+    private DeliveryDetailController dc;
     private JTable historyTable;
     private DefaultTableModel tableModel;
+    private JButton viewDetail;
 
     public ViewHistory() {
+        dc = new DeliveryDetailController();
         initComponents();
         if (!new AuthenticationController().checkUser()) {
             this.dispose();
@@ -35,6 +39,7 @@ public class ViewHistory extends JFrame {
         titleLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 24));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
+
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Transaction ID");
         tableModel.addColumn("Delivery Type");
@@ -44,9 +49,8 @@ public class ViewHistory extends JFrame {
         tableModel.addColumn("Updated at");
         tableModel.addColumn("Details");
 
-
-
         historyTable = new JTable(tableModel);
+        loadDataToView();
 
         JScrollPane scrollPane = new JScrollPane(historyTable);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
@@ -68,7 +72,18 @@ public class ViewHistory extends JFrame {
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         add(mainPanel);
+
+        viewDetail = new JButton("View Details");
     }
 
+    private void loadDataToView() {
+        List<DeliveryTransaction> dt = dc.getAllDeliveryTransactions(AuthenticationHelper.getInstance().getUserId());
 
+        tableModel.setRowCount(0);
+
+        for (DeliveryTransaction d : dt) {
+            Object[] rowData = { d.getTransaction().getTrans_id(), d.getTransaction().getDelivery_type(), d.getTransaction().getExpected_weight(), d.getTransaction().getTotal_cost(), d.getTransaction().getCreatedAt(), d.getDetails().getDate(), viewDetail };
+            tableModel.addRow(rowData);
+        }
+    }
 }

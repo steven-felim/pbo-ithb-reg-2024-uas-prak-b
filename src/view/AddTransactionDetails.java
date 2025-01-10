@@ -1,7 +1,7 @@
 package view;
 
 import controller.AuthenticationController;
-import controller.TransactionController;
+import controller.DeliveryDetailController;
 import model.classes.DeliveryDetails;
 import model.enums.Status;
 
@@ -10,10 +10,10 @@ import java.awt.*;
 
 public class AddTransactionDetails extends JFrame {
     private JComboBox<String> statusComboBox;
-    private TransactionController tc;
+    private DeliveryDetailController dc;
 
     public AddTransactionDetails() {
-        tc = new TransactionController();
+        dc = new DeliveryDetailController();
         initComponents();
         if (!new AuthenticationController().checkUser()) {
             this.dispose();
@@ -23,6 +23,7 @@ public class AddTransactionDetails extends JFrame {
     }
 
     private void initComponents() {
+        DeliveryDetails data = new DeliveryDetails();
         setTitle("Add Transaction Details");
         setSize(900, 600);
         getContentPane().setBackground(Color.WHITE);
@@ -48,7 +49,6 @@ public class AddTransactionDetails extends JFrame {
         gbc.gridx = 1;
         mainPanel.add(transIDField, gbc);
 
-        DeliveryDetails data = new DeliveryDetails();
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -56,7 +56,9 @@ public class AddTransactionDetails extends JFrame {
 
         Status[] s = Status.values();
         String[] status = new String[s.length];
-        System.arraycopy(status, 0, status, 0, status.length);
+        for (int i = 0; i < s.length; i++) {
+            status[i] = s[i].toString();
+        }
 
         statusComboBox = new JComboBox<>(status);
         gbc.gridx = 1;
@@ -74,11 +76,17 @@ public class AddTransactionDetails extends JFrame {
         gbc.gridy = 3;
         mainPanel.add(new JLabel("Insert Evidence:"), gbc);
 
-        JFileChooser fileChooser = new JFileChooser();
-        JPanel photoPanel = createFileChooserFoto(fileChooser, data);
-        photoPanel.setVisible(true);
+        JFileChooser fcFoto = new JFileChooser();
+        JButton browseButton = new JButton("Browse...");
+        browseButton.addActionListener(e -> {
+            int returnValue = fcFoto.showOpenDialog(mainPanel);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                data.setEvidence(fcFoto.getSelectedFile().getAbsolutePath());
+                browseButton.setText(data.getEvidence());
+            }
+        });
         gbc.gridx = 1;
-        mainPanel.add(photoPanel, gbc);
+        mainPanel.add(browseButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -104,7 +112,11 @@ public class AddTransactionDetails extends JFrame {
         add(mainPanel);
 
         confirmButton.addActionListener(e -> {
-
+            data.setTransaction_id(Integer.parseInt(transIDField.getText()));
+            data.setCurrent_position(positionField.getText());
+            data.setStatus(Status.valueOf(statusComboBox.getSelectedItem().toString()));
+            data.setUpdated_by(updatedByField.getText());
+            dc.addToDeliveryDetail(data);
         });
 
         backButton.addActionListener(e -> {
@@ -112,19 +124,5 @@ public class AddTransactionDetails extends JFrame {
             new MainMenu();
         });
 
-    }
-
-    public JPanel createFileChooserFoto(JFileChooser fileChooser, DeliveryDetails data) {
-        JPanel panel = new JPanel();
-        JButton browseButton = new JButton("Browse...");
-        browseButton.addActionListener(e -> {
-            int returnValue = fileChooser.showOpenDialog(this);
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                data.setEvidence(fileChooser.getSelectedFile().getAbsolutePath());
-                browseButton.setText(data.getEvidence());
-            }
-        });
-        panel.add(browseButton);
-        return panel;
     }
 }
