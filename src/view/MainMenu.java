@@ -1,10 +1,13 @@
 package view;
 
+import controller.AuthenticationController;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainMenu extends JFrame {
     private JButton loginButton, registerButton, addTransButton, viewHistoryButton;
+    private Logo logo = new Logo();
 
     public MainMenu() {
         initComponents();
@@ -20,9 +23,14 @@ public class MainMenu extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setTitle("Main Menu");
 
+        JLabel photo = new JLabel(logo.getLogo());
+        photo.setBounds(44, 22, 62, 51);
+        photo.setVisible(true);
+        add(photo);
+
         JLabel title = new JLabel("Pratama Delivery");
-        title.setBounds(75, 30, 250, 40);
-        title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
+        title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
+        title.setBounds(123, 22, 250, 51);
 
         JPanel panel = new JPanel();
         panel.setBackground(Color.WHITE);
@@ -64,6 +72,11 @@ public class MainMenu extends JFrame {
             this.dispose();
             new ViewHistory();
         });
+
+        if (!new AuthenticationController().checkUserButton()) {
+            addTransButton.setEnabled(false);
+            viewHistoryButton.setEnabled(false);
+        }
 
         add(title);
         add(panel);

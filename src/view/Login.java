@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Login extends JFrame {
+    private Logo logo = new Logo();
+
     public Login() {
         initComponents();
         setVisible(true);
@@ -22,9 +24,14 @@ public class Login extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        JLabel title = new JLabel("Login");
-        title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
-        title.setBounds(143, 22, 200, 51);
+        JLabel photo = new JLabel(logo.getLogo());
+        photo.setBounds(44, 22, 62, 51);
+        photo.setVisible(true);
+        add(photo);
+
+        JLabel title = new JLabel("Pratama Delivery");
+        title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
+        title.setBounds(123, 22, 250, 51);
         JPanel formLogin = new JPanel();
         formLogin.setBackground(Color.WHITE);
         formLogin.setLayout(null);
