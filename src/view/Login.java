@@ -94,8 +94,8 @@ public class Login extends JFrame {
                     );
                     break;
                 case 1:
-                    this.dispose();
                     JOptionPane.showMessageDialog(null, "Login berhasil");
+                    this.dispose();
                     new MainMenu();
                     break;
             }

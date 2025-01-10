@@ -13,6 +13,10 @@ public class DeliveryDetails {
     private Date date;
     private String updated_by;
 
+    public DeliveryDetails() {
+
+    }
+
     public DeliveryDetails(int id, int transaction_id, Status status, String current_position, String evidence, Date date, String updated_by) {
         this.id = id;
         this.transaction_id = transaction_id;

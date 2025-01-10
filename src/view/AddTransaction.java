@@ -1,13 +1,17 @@
 package view;
 
 import controller.AuthenticationController;
+import controller.AuthenticationHelper;
+import controller.TransactionController;
 import javax.swing.*;
 import java.awt.*;
 
 public class AddTransaction extends JFrame {
-    private JComboBox<String> roomComboBox;
+    private JComboBox<String> categoryComboBox;
+    private TransactionController tc;
 
     public AddTransaction() {
+        tc = new TransactionController();
         initComponents();
         if (!new AuthenticationController().checkUser()) {
             this.dispose();
@@ -70,9 +74,9 @@ public class AddTransaction extends JFrame {
         gbc.gridy = 4;
         mainPanel.add(new JLabel("Select Delivery Details:"), gbc);
 
-        roomComboBox = new JComboBox<>(new String[] {"Building Materials", "House Moving", "Instant Delivery"} );
+        categoryComboBox = new JComboBox<>(tc.getCategory());
         gbc.gridx = 1;
-        mainPanel.add(roomComboBox, gbc);
+        mainPanel.add(categoryComboBox, gbc);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.WHITE);
@@ -90,7 +94,7 @@ public class AddTransaction extends JFrame {
         add(mainPanel);
 
         confirmButton.addActionListener(e -> {
-
+            tc.addToTransaction(AuthenticationHelper.getInstance().getUserId(), categoryComboBox.getSelectedItem().toString(), Integer.parseInt(weightField.getText()), nameField.getText(), addressField.getText(), phoneField.getText());
         });
 
         backButton.addActionListener(e -> {

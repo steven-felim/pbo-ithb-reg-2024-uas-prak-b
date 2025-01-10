@@ -42,6 +42,13 @@ public class AuthenticationController {
 		new Login();
 	}
 
+	public boolean checkUserButton() {
+		if (AuthenticationHelper.getInstance().getUserId() == 0) {
+			return false;
+		}
+		return true;
+	}
+
 	public boolean checkUser() {
 		if (AuthenticationHelper.getInstance().getUserId() == 0) {
 			new MainMenu();
